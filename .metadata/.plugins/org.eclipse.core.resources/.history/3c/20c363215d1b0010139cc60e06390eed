@@ -1,0 +1,50 @@
+package mySQL;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet (urlPatterns = "/curdDemo")
+public class SQL_CURD extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/html");
+		PrintWriter pw = resp.getWriter();
+		connectJDBC connJDBC = new connectJDBC();
+//		String query = "select * from user";
+//		String query = "select * from user where email = ?";
+		String query = "insert into user values (?, ?, ?, ?)";
+		try {
+			Connection conn = connJDBC.getConn();
+//			Statement stm = conn.createStatement();
+			PreparedStatement pstm = conn.prepareStatement(query);
+//			pstm.setString(1, "thuynvm1610@gmail.com");
+			pstm.setInt(1, 6);
+			pstm.setString(2, "Đoàn Văn Hậu");
+			pstm.setString(3, "haudv0203@gmail.com");
+			pstm.setInt(4, 123456784);
+			ResultSet rs = pstm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String userName = rs.getString("userName");
+				String email = rs.getString("email");
+				String password = rs.getString("password");
+				pw.println("Id: " + id + "<br>User name: " + userName + "<br>Email: " + email + "<br>Password: " + password);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+}

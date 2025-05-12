@@ -1,0 +1,25 @@
+# Bỏ qua file biên dịch Java
+*.class
+
+# Thư mục build của Eclipse
+/bin/
+/build/
+
+# Cấu hình riêng của Eclipse (không cần thiết cho người khác)
+.project
+.classpath
+.settings/
+
+# File log, tạm thời
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Nếu dùng Git trên Windows
+ehthumbs.db
+desktop.ini
