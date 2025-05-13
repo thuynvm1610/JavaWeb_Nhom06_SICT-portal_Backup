@@ -82,6 +82,17 @@
                             </button>
                         </form>
                     </li>
+                    <li class="nav-item">
+                        <form method="get" action="admin">
+                            <input type="hidden" name="action" value="student_classroom">
+                            <button type="submit" class="sidebar-btn">
+                                <div class="sidebar__icon-container">
+                                    <i class="fas fa-user-plus me-2"></i>
+                                </div>
+                                Sinh viên - Lớp học
+                            </button>
+                        </form>
+                    </li>
                     <li class="nav-item mt-3">
                         <form method="get" action="admin">
                             <input type="hidden" name="action" value="logout">

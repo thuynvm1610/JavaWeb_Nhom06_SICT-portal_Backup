@@ -10,12 +10,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+    <style>
+        .alert-info {
+            background-color: #e7f3fe;
+            color: #31708f;
+            border: 1px solid #bce8f1;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body>
     <c:if test="${not empty message}">
-        <div class="alert-error">
-            &#9888; ${message}
+        <div class="alert-info">
+            &#8505; ${message}
         </div>
     </c:if>
     <div class="container-fluid">
@@ -81,6 +94,17 @@
                             </button>
                         </form>
                     </li>
+                    <li class="nav-item">
+                        <form method="get" action="admin">
+                            <input type="hidden" name="action" value="student_classroom">
+                            <button type="submit" class="sidebar-btn">
+                                <div class="sidebar__icon-container">
+                                    <i class="fas fa-user-plus me-2"></i>
+                                </div>
+                                Sinh viên - Lớp học
+                            </button>
+                        </form>
+                    </li>
                     <li class="nav-item mt-3">
                         <form method="get" action="admin">
                             <input type="hidden" name="action" value="logout">
@@ -97,7 +121,7 @@
             <!-- Main content -->
             <div class="col-md-10 main-content">
                 <div class="tab-content">
-                    <!-- Classrooms Tab -->
+                    <!-- Students Tab -->
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h2>Danh sách lớp đang học của sinh viên <strong>
@@ -126,9 +150,9 @@
                                                             <div style="display: flex; gap: 5px;">
                                                                 <form method="get" action="admin">
                                                                     <input type="hidden" name="action"
-                                                                        value="searchClassroomListByStudentID" />
-                                                                    <input type="hidden" name="studentID"
-                                                                        value="${s.studentID}" />
+                                                                        value="searchStudentListByClassroomID" />
+                                                                    <input type="hidden" name="classroomID"
+                                                                        value="${sc.classroomID}" />
                                                                     <button class="btn btn-sm btn-info" type="submit">
                                                                         <i class="fas fa-eye"></i>
                                                                     </button>

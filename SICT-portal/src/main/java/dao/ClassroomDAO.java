@@ -138,4 +138,30 @@ public class ClassroomDAO {
 		}
 	}
 
+	public List<Classroom> findByTeacherID(String teacherID) {
+		String sql = "select * from classroom where teacherID = ?";
+		DBConnect dbConn = new DBConnect();
+		List<Classroom> classroomList = new ArrayList<Classroom>();
+		try {
+			Connection conn = dbConn.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, teacherID);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Classroom classroom = new Classroom();
+				classroom.setClassroomID(rs.getString("classroomID"));
+				classroom.setName(rs.getString("name"));
+				classroom.setTeacherID(rs.getString("teacherID"));
+				classroomList.add(classroom);
+			}
+			conn.close();
+			pstmt.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return classroomList;
+	}
+	
 }

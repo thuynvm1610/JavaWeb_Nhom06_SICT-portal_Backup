@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -60,7 +59,7 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <form method="get" action="admin">
                             <input type="hidden" name="action" value="teacherList">
                             <button type="submit" class="sidebar-btn">
@@ -71,7 +70,7 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <form method="get" action="admin">
                             <input type="hidden" name="action" value="classroomList">
                             <button type="submit" class="sidebar-btn">
@@ -109,32 +108,16 @@
             <!-- Main content -->
             <div class="col-md-10 main-content">
                 <div class="tab-content">
-                    <!-- Teachers Tab -->
+                    <!-- Classrooms Tab -->
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h2>Quản lý thông tin giáo viên</h2>
-                            <form method="get" action="admin">
-                                <input type="hidden" name="action" value="addTeacherForm" />
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-plus me-1"></i>
-                                    Thêm giáo viên
-                                </button>
-                            </form>
+                            <h2>Danh sách sinh viên đang học của lớp <strong>
+                                    <c:out value="${classroomID}" />
+                                </strong></h2>
                         </div>
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <span>Danh sách giáo viên</span>
-                                <form method="get" action="admin">
-                                    <div style="display: flex;">
-                                        <input type="hidden" name="action" value="searchTeacher" />
-                                        <input
-                                            style="outline: none; border: none; border-bottom-left-radius: 6px; border-top-left-radius: 6px; padding-left: 10px;"
-                                            type="text" name="teacherID" placeholder="Nhập mã giáo viên..." />
-                                        <button class="btn btn-outline-secondary" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                </form>
+                                <span>Danh sách sinh viên</span>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -142,48 +125,21 @@
                                         <table class="table table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Mã GV</th>
-                                                    <th>Họ tên</th>
-                                                    <th>Giới tính</th>
-                                                    <th>Ngày sinh</th>
-                                                    <th>Email</th>
+                                                    <th>Mã SV</th>
                                                     <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="t" items="${teacherList}">
+                                                <c:forEach var="sc" items="${student_classroomList}">
                                                     <tr>
-                                                        <td>${t.teacherID}</td>
-                                                        <td>${t.name}</td>
-                                                        <td>${t.gender}</td>
-                                                        <td>${t.dob}</td>
-                                                        <td>${t.email}</td>
+                                                        <td>${sc.studentID}</td>
                                                         <td>
                                                             <div style="display: flex; gap: 5px;">
                                                                 <form method="get" action="admin">
                                                                     <input type="hidden" name="action"
-                                                                        value="updateTeacherForm" />
-                                                                    <input type="hidden" name="teacherID"
-                                                                        value="${t.teacherID}" />
-                                                                    <button class="btn btn-sm btn-warning"
-                                                                        type="submit">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-                                                                </form>
-                                                                <form method="get" action="admin">
-                                                                    <input type="hidden" name="action"
-                                                                        value="deleteTeacherForm" />
-                                                                    <input type="hidden" name="teacherID"
-                                                                        value="${t.teacherID}" />
-                                                                    <button class="btn btn-sm btn-danger" type="submit">
-                                                                        <i class="fas fa-trash"></i>
-                                                                    </button>
-                                                                </form>
-                                                                <form method="get" action="admin">
-                                                                    <input type="hidden" name="action"
-                                                                        value="searchClassroomListByTeacherID" />
-                                                                    <input type="hidden" name="teacherID"
-                                                                        value="${t.teacherID}" />
+                                                                        value="searchClassroomListByStudentID" />
+                                                                    <input type="hidden" name="studentID"
+                                                                        value="${sc.studentID}" />
                                                                     <button class="btn btn-sm btn-info" type="submit">
                                                                         <i class="fas fa-eye"></i>
                                                                     </button>
@@ -203,39 +159,6 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Delete Teacher Modal -->
-    <div class="modal fade" id="deleteTeacherModal" tabindex="-1" aria-labelledby="deleteTeacherModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Xóa giáo viên</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xóa giáo viên <strong>
-                            <c:out value="${teacherID}" />
-                        </strong> không?</p>
-                    <p class="text-danger">Hành động này không thể hoàn tác!</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="admin" method="post">
-                        <input type="hidden" name="action" value="deleteTeacher" />
-                        <input type="hidden" name="teacherID" value="${teacherID}" />
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-danger">Xóa</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            var myModal = new bootstrap.Modal(document.getElementById('deleteTeacherModal'));
-            myModal.show();
-        });
-    </script>
 </body>
 
 </html>

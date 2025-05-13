@@ -37,11 +37,6 @@
             &#9989; ${succeedAddMessage}
         </div>
     </c:if>
-    <c:if test="${not empty succeedUpdateMessage}">
-        <div class="alert-success">
-            &#9989; ${succeedUpdateMessage}
-        </div>
-    </c:if>
     <c:if test="${not empty succeedDeleteMessage}">
         <div class="alert-success">
             &#9989; ${succeedDeleteMessage}
@@ -66,7 +61,7 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <form method="get" action="admin">
                             <input type="hidden" name="action" value="accountList">
                             <button type="submit" class="sidebar-btn">
@@ -110,9 +105,9 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <form method="get" action="admin">
-                            <input type="hidden" name="action" value="student_classroom">
+                            <input type="hidden" name="action" value="classroomList">
                             <button type="submit" class="sidebar-btn">
                                 <div class="sidebar__icon-container">
                                     <i class="fas fa-user-plus me-2"></i>
@@ -137,84 +132,77 @@
             <!-- Main content -->
             <div class="col-md-10 main-content">
                 <div class="tab-content">
-                    <!-- Students Tab -->
+                    <!-- Student - Classroom Tab -->
                     <div>
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h2>Quản lý thông tin tài khoản</h2>
-                            <form method="get" action="admin">
-                                <input type="hidden" name="action" value="addAccountForm" />
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-plus me-1"></i>
-                                    Thêm tài khoản
-                                </button>
-                            </form>
-                        </div>
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <span>Danh sách tài khoản</span>
+                        <h2 class="mb-4">Sinh viên - Lớp học</h2>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <form method="get" action="admin">
-                                    <div style="display: flex;">
-                                        <input type="hidden" name="action" value="searchAccount" />
-                                        <input
-                                            style="outline: none; border: none; border-bottom-left-radius: 6px; border-top-left-radius: 6px; padding-left: 10px;"
-                                            type="text" name="accountID" placeholder="Nhập mã tài khoản..." />
-                                        <button class="btn btn-outline-secondary" type="submit">
-                                            <i class="fas fa-search"></i>
+                                    <input type="hidden" name="action" value="searchStudentListByClassroomID" />
+                                    <label for="classroomID" class="form-label">Xem danh sách sinh viên theo mã
+                                        lớp</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="classroomID" name="classroomID"
+                                            style="box-shadow: none;" placeholder="Nhập mã lớp...">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <form method="get" action="admin">
+                                    <input type="hidden" name="action" value="searchClassroomListByStudentID" />
+                                    <label for="studentID" class="form-label">Xem danh sách lớp theo mã sinh
+                                        viên</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="studentID" name="studentID"
+                                            style="box-shadow: none;" placeholder="Nhập mã sinh viên...">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row" style="border-top: 1px solid black; margin-top: 24px;">
+                            <div class="col-md-6" style="margin-top: 24px;">
+                                <form method="post" action="admin">
+                                    <input type="hidden" name="action" value="addStudent_classroom" />
+                                    <label style="font-size: 18.72px; font-weight: bold;" for="classroomID"
+                                        class="form-label text-center w-100">
+                                        Thêm sinh viên vào lớp
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="classroomID" name="classroomID"
+                                            value="${classroomID}" style="box-shadow: none;"
+                                            placeholder="Nhập mã lớp...">
+                                        <input type="text" class="form-control" id="studentID" name="studentID"
+                                            value="${studentID}" style="box-shadow: none;" placeholder="Nhập mã SV...">
+                                    </div>
+                                    <div class="d-flex justify-content-end" style="margin-top: 16px;">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-user-plus"></i> Thêm sinh viên
                                         </button>
                                     </div>
                                 </form>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <div style="max-height: 520.5px; overflow: auto;">
-                                        <table class="table table-striped table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Mã tài khoản</th>
-                                                    <th>Tên tài khoản</th>
-                                                    <th>Mật khẩu</th>
-                                                    <th>Quyền đăng nhập</th>
-                                                    <th>Mã SV</th>
-                                                    <th>Hành động</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach var="a" items="${accountList}">
-                                                    <tr>
-                                                        <td>${a.accountID}</td>
-                                                        <td>${a.username}</td>
-                                                        <td>${a.password}</td>
-                                                        <td>${a.role}</td>
-                                                        <td>${a.studentID}</td>
-                                                        <td>
-                                                            <div style="display: flex; gap: 5px;">
-                                                                <form method="get" action="admin">
-                                                                    <input type="hidden" name="action"
-                                                                        value="updateAccountForm" />
-                                                                    <input type="hidden" name="accountID"
-                                                                        value="${a.accountID}" />
-                                                                    <button class="btn btn-sm btn-warning"
-                                                                        type="submit">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-                                                                </form>
-                                                                <form method="get" action="admin">
-                                                                    <input type="hidden" name="action"
-                                                                        value="deleteAccountForm" />
-                                                                    <input type="hidden" name="accountID"
-                                                                        value="${a.accountID}" />
-                                                                    <button class="btn btn-sm btn-danger" type="submit">
-                                                                        <i class="fas fa-trash"></i>
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
+                            <div class="col-md-6" style="margin-top: 24px;">
+                                <form method="post" action="admin">
+                                    <input type="hidden" name="action" value="deleteStudent_classroom" />
+                                    <label style="font-size: 18.72px; font-weight: bold;" for="studentID"
+                                        class="form-label text-center w-100">
+                                        Xóa sinh viên khỏi lớp
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="studentID" name="studentID"
+                                            value="${studentID}" style="box-shadow: none;" placeholder="Nhập mã SV...">
+                                        <input type="text" class="form-control" id="classroomID" name="classroomID"
+                                            value="${classroomID}" style="box-shadow: none;"
+                                            placeholder="Nhập mã lớp...">
                                     </div>
-                                </div>
+                                    <div class="d-flex justify-content-end" style="margin-top: 16px;">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-user-minus"></i> Xoá sinh viên
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

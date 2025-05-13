@@ -82,6 +82,17 @@
                             </button>
                         </form>
                     </li>
+                    <li class="nav-item">
+                        <form method="get" action="admin">
+                            <input type="hidden" name="action" value="student_classroom">
+                            <button type="submit" class="sidebar-btn">
+                                <div class="sidebar__icon-container">
+                                    <i class="fas fa-user-plus me-2"></i>
+                                </div>
+                                Sinh viên - Lớp học
+                            </button>
+                        </form>
+                    </li>
                     <li class="nav-item mt-3">
                         <form method="get" action="admin">
                             <input type="hidden" name="action" value="logout">
@@ -166,6 +177,15 @@
                                                                         value="${t.teacherID}" />
                                                                     <button class="btn btn-sm btn-danger" type="submit">
                                                                         <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                                <form method="get" action="admin">
+                                                                    <input type="hidden" name="action"
+                                                                        value="searchClassroomListByTeacherID" />
+                                                                    <input type="hidden" name="teacherID"
+                                                                        value="${t.teacherID}" />
+                                                                    <button class="btn btn-sm btn-info" type="submit">
+                                                                        <i class="fas fa-eye"></i>
                                                                     </button>
                                                                 </form>
                                                             </div>
