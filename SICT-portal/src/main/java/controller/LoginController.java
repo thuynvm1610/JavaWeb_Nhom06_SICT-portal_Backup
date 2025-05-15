@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.AccountDAO;
 import dao.LoginDAO;
+import model.Account;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginController extends HttpServlet {
@@ -24,6 +26,9 @@ public class LoginController extends HttpServlet {
 
 		if (action.equals("loginForm")) {
 			req.getRequestDispatcher("view/login/loginForm.jsp").forward(req, resp);
+			return;
+		} else if (action.equals("signUpForm")) {
+			req.getRequestDispatcher("view/login/signUpForm.jsp").forward(req, resp);
 			return;
 		} else if (action.equals("loginRequest")) {
 			String username = req.getParameter("username");
@@ -52,6 +57,54 @@ public class LoginController extends HttpServlet {
 			} else if (role.equals("student")) {
 				resp.sendRedirect("admin?action=studentList");
 			}
+			return;
+		}
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html;charset=UTF-8");
+
+		String action = req.getParameter("action");
+		
+		if (action.equals("addStudentAccount")) {
+			LoginDAO loginDAO = new LoginDAO();
+			AccountDAO accountDAO = new AccountDAO();
+			StringBuilder message = new StringBuilder();
+
+			if (loginDAO.isStudentIDUsed(req.getParameter("studentID"))) {
+				message.append("Mã sinh viên đã được sử dụng<br>");
+			} else if (!loginDAO.isStudentExists(req.getParameter("studentID"))) {
+				message.append("Mã sinh viên không tồn tại<br>");
+			} else if (loginDAO.isUsernameExists(req.getParameter("username"))) {
+				message.append("Tên tài khoản đã được sử dụng<br>");
+			} else if (!loginDAO.isConfirmPasswordValid(req.getParameter("confirmPassword"), req.getParameter("password"))) {
+				message.append("Xác nhận mật khẩu sai<br>");
+			}
+
+			String accountID = loginDAO.generateNextStudentAccountID();
+			Account account = new Account();
+			account.setAccountID(accountID);
+			account.setUsername(req.getParameter("username"));
+			account.setPassword(req.getParameter("password"));
+			account.setRole("student");
+			account.setStudentID(req.getParameter("studentID"));
+
+			if (message.length() > 0) {
+				req.setAttribute("account", account);
+				req.setAttribute("message", message.toString());
+				req.setAttribute("studentID", req.getParameter("studentID"));
+				req.setAttribute("username", req.getParameter("username"));
+				req.setAttribute("password", req.getParameter("password"));
+				req.getRequestDispatcher("view/login/signUpForm.jsp").forward(req, resp);
+				return;
+			}
+			
+			accountDAO.insert(account);
+			req.setAttribute("succeedAddMessage", "Đăng ký tài khoản thành công");
+			resp.sendRedirect("login?action=signUpForm");
+			req.removeAttribute("succeedAddMessage");
 			return;
 		}
 	}

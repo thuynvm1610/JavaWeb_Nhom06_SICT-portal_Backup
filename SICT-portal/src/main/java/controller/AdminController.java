@@ -185,7 +185,7 @@ public class AdminController extends HttpServlet {
 			req.setAttribute("student_classroomList", student_classroomList);
 			req.setAttribute("classroomID", classroomID);
 			if (student_classroomList.isEmpty()) {
-				req.setAttribute("message", "Không tìm thấy lớp học " + classroomID);
+				req.setAttribute("message", "Lớp " + req.getParameter("classroomID") + " hiện chưa có sinh viên nào");
 			}
 			req.getRequestDispatcher("view/admin/studentListByClassroomID.jsp").forward(req, resp);
 			return;
@@ -419,7 +419,7 @@ public class AdminController extends HttpServlet {
 			if (accountDAO.findByID(req.getParameter("accountID")) != null) {
 				message.append("Mã tài khoản đã tồn tại<br>");
 			} else if (accountDAO.isUsernameExists(req.getParameter("username"), req.getParameter("accountID"))) {
-				message.append("Tên tài khoản được sử dụng<br>");
+				message.append("Tên tài khoản đã được sử dụng<br>");
 			} else if (accountDAO.isStudentIDUsed(req.getParameter("studentID"), null, req.getParameter("role"))) {
 				message.append("Mã sinh viên đã được sử dụng<br>");
 			} else if (!studentDAO.isStudentExists(req.getParameter("studentID"), req.getParameter("role"))) {

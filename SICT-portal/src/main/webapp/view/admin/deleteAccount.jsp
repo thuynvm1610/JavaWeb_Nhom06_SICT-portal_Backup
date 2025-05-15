@@ -14,11 +14,6 @@
 </head>
 
 <body>
-    <c:if test="${not empty message}">
-        <div class="alert-error">
-            &#9888; ${message}
-        </div>
-    </c:if>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -205,6 +200,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <c:if test="${not empty message}">
+                        <div class="alert-error">
+                            &#9888; ${message}
+                        </div>
+                    </c:if>
                     <p>Bạn có chắc chắn muốn xóa tài khoản <strong>
                             <c:out value="${accountID}" />
                         </strong> không?</p>

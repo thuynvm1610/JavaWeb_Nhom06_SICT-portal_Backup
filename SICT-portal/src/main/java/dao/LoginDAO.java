@@ -68,5 +68,80 @@ public class LoginDAO {
 			return null;
 		}
 	}
+
+	public boolean isStudentIDUsed(String studentID) {
+		String sql = "select studentID from account where studentID = ?";
+		DBConnect dbConn = new DBConnect();
+		try {
+			Connection conn = dbConn.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, studentID);
+			ResultSet rs = pstmt.executeQuery();
+			boolean result = rs.next();
+			conn.close();
+			pstmt.close();
+			rs.close();
+			return result;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+	public boolean isStudentExists(String studentID) {
+		String sql = "select studentID from student where studentID = ?";
+		DBConnect dbConn = new DBConnect();
+		try {
+			Connection conn = dbConn.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, studentID);
+			ResultSet rs = pstmt.executeQuery();
+			boolean result = rs.next();
+			conn.close();
+			pstmt.close();
+			rs.close();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public String getLastStudentAccountID() {
+	    String sql = "select accountID from account where role = 'student' order by accountID desc limit 1";
+	    DBConnect dbConn = new DBConnect();
+	    try {
+	        Connection conn = dbConn.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("accountID");
+	        }
+	        conn.close();
+	        pstmt.close();
+	        rs.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+	
+	public String generateNextStudentAccountID() {
+	    String lastID = getLastStudentAccountID();
+	    if (lastID != null) {
+	        int number = Integer.parseInt(lastID.substring(3));
+	        number++;
+	        return String.format("TK_%04d", number);
+	    } else {
+	        return "TK_0001";
+	    }
+	}
+
+	public boolean isConfirmPasswordValid(String confirmPassword, String password) {
+		if (confirmPassword.equals(password)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 }

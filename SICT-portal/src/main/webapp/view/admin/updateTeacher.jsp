@@ -14,11 +14,6 @@
 </head>
 
 <body>
-    <c:if test="${not empty message}">
-        <div class="alert-error">
-            &#9888; ${message}
-        </div>
-    </c:if>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -215,6 +210,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                        <c:if test="${not empty message}">
+                            <div class="alert-error">
+                                &#9888; ${message}
+                            </div>
+                        </c:if>
                     <form action="admin" method="post">
                         <input type="hidden" name="action" value="updateTeacher" />
                         <input type="hidden" name="teacherID" value="${teacher.teacherID}">

@@ -66,46 +66,76 @@
         .auth-footer__button:hover {
             text-decoration: underline;
         }
+
+        .alert-success {
+            background-color: #e0f7e9;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
 
 <body>
-     <c:if test="${not empty message}">
+    <c:if test="${not empty message}">
         <div class="alert-error">
             &#9888; ${message}
         </div>
     </c:if>
-    <!-- Login Page -->
-    <div class="auth-container" id="loginPage">
+    <c:if test="${not empty succeedAddMessage}">
+        <div class="alert-success">
+            &#9989; ${succeedAddMessage}
+        </div>
+    </c:if>
+    <!-- Register Page -->
+    <div class="auth-container" id="registerPage">
         <div class="auth-card">
             <div class="auth-header">
-                <h4><i class="fas fa-graduation-cap me-2"></i>Đăng nhập hệ thống</h4>
+                <h4><i class="fas fa-user-plus me-2"></i>Đăng ký tài khoản</h4>
             </div>
             <div class="auth-body">
-                <form method="get" action="login" >
-                    <input type="hidden" name="action" value="loginRequest">
+                <form method="post" action="login">
+                    <input type="hidden" name="action" value="addStudentAccount">
+                    <div class="mb-3">
+                        <label for="studentID" class="form-label">Nhập mã sinh viên</label>
+                        <input type="text" class="form-control" id="studentID" name="studentID" value="${studentID}"
+                            style="box-shadow: none;" required>
+                    </div>
                     <div class="mb-3">
                         <label for="username" class="form-label">Tên tài khoản</label>
-                        <input type="text" class="form-control" id="username" name="username" value="${username}" style="box-shadow: none;" required>
+                        <input type="text" class="form-control" id="username" name="username" value="${username}"
+                            style="box-shadow: none;" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Mật khẩu</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="password" name="password" value="${password}" style="box-shadow: none;" required>
-                            <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword">
+                            <input type="password" class="form-control" id="password" name="password"
+                                value="${password}" style="box-shadow: none;" required>
+                            <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-auth btn-primary w-100">Đăng nhập</button>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                            style="box-shadow: none;" required>
+                    </div>
+                    <button type="submit" class="btn btn-auth btn-primary w-100">Đăng ký</button>
                 </form>
             </div>
             <div class="auth-footer">
                 <form method="get" action="login">
-                    <input type="hidden" name="action" value="signUpForm">
-                    Chưa có tài khoản?
-                    <button class="auth-footer__button" type="submit" style="background: none; border: none; color: #3498db;">
-                        Đăng ký ngay
+                    <input type="hidden" name="action" value="loginForm">
+                    Bạn đã có tài khoản?
+                    <button class="auth-footer__button" type="submit"
+                        style="background: none; border: none; color: #3498db;">
+                        Đăng nhập ngay
                     </button>
                 </form>
             </div>
@@ -126,7 +156,7 @@
                 });
             }
 
-            setupPasswordToggle('toggleLoginPassword', 'password');
+            setupPasswordToggle('toggleRegisterPassword', 'password');
         });
     </script>
 </body>

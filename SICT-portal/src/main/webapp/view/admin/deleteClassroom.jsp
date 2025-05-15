@@ -14,11 +14,6 @@
 </head>
 
 <body>
-    <c:if test="${not empty message}">
-        <div class="alert-error">
-            &#9888; ${message}
-        </div>
-    </c:if>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -175,6 +170,15 @@
                                                                         <i class="fas fa-trash"></i>
                                                                     </button>
                                                                 </form>
+                                                                <form method="get" action="admin">
+                                                                    <input type="hidden" name="action"
+                                                                        value="searchStudentListByClassroomID" />
+                                                                    <input type="hidden" name="classroomID"
+                                                                        value="${c.classroomID}" />
+                                                                    <button class="btn btn-sm btn-info" type="submit">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -201,6 +205,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <c:if test="${not empty message}">
+                        <div class="alert-error">
+                            &#9888; ${message}
+                        </div>
+                    </c:if>
                     <p>Bạn có chắc chắn muốn xóa lớp học <strong>
                             <c:out value="${classroomID}" />
                         </strong> không?</p>
