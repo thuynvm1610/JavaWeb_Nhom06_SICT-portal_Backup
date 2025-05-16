@@ -200,7 +200,7 @@
     </div>
     <!-- Add Teacher Modal -->
     <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel"
-        aria-hidden="true">
+        aria-hidden="true" style="position: fixed; top: 10%;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

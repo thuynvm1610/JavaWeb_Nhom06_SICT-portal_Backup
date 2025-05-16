@@ -196,7 +196,7 @@
     </div>
     <!-- Edit Classroom Modal -->
     <div class="modal fade" id="editClassroomModal" tabindex="-1" aria-labelledby="editClassroomModalLabel"
-        aria-hidden="true">
+        aria-hidden="true" style="position: fixed; top: 10%;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

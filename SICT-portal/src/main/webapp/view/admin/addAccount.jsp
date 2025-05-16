@@ -191,7 +191,7 @@
     </div>
     <!-- Add Account Modal -->
     <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel"
-        aria-hidden="true">
+        aria-hidden="true" style="position: fixed; top: 10%;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
