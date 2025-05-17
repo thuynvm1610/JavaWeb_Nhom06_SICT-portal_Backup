@@ -52,10 +52,12 @@ public class LoginController extends HttpServlet {
 			}
 			
 			String role = loginDAO.getRole(username);
+			String studentName = loginDAO.getStudentName(username);
 			if (role.equals("admin")) {		
 				resp.sendRedirect("admin?action=dashboard");
 			} else if (role.equals("student")) {
-				resp.sendRedirect("admin?action=studentList");
+				req.setAttribute("studentName", studentName);
+				req.getRequestDispatcher("view/student/personalInformation.jsp").forward(req, resp);
 			}
 			return;
 		}

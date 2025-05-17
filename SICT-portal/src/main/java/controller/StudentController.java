@@ -27,7 +27,10 @@ public class StudentController extends HttpServlet {
 
 		String action = req.getParameter("action");
 
-		if (action.equals("classroomListByStudentID")) {
+		if (action.equals("personalInformation")) {
+			req.getRequestDispatcher("view/student/personalInformation.jsp").forward(req, resp);
+			return;
+		} else if (action.equals("classroomListByStudentID")) {
 			String studentID = req.getParameter("studentID");
 			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
 			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(null, studentID);
