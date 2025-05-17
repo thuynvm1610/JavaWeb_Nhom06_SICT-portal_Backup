@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.StudentDAO;
 import dao.Student_classroomDAO;
@@ -28,6 +29,16 @@ public class StudentController extends HttpServlet {
 		String action = req.getParameter("action");
 
 		if (action.equals("personalInformation")) {
+			String studentName = (String) req.getSession().getAttribute("studentName");
+			req.setAttribute("studentName", studentName);
+			
+			String studentID = (String) req.getSession().getAttribute("studentID");
+			
+			StudentDAO studentDAO = new StudentDAO();
+			Student student = studentDAO.findByID(studentID);
+			
+			req.setAttribute("student", student);
+			
 			req.getRequestDispatcher("view/student/personalInformation.jsp").forward(req, resp);
 			return;
 		} else if (action.equals("classroomListByStudentID")) {
@@ -54,6 +65,13 @@ public class StudentController extends HttpServlet {
 			Student student = studentDAO.findByID(studentID);
 			req.setAttribute("student", student);
 			req.getRequestDispatcher("view/student/updateStudent.jsp").forward(req, resp);
+			return;
+		} else if (action.equals("logout")) {
+			HttpSession session = req.getSession(false);
+		    if (session != null) {
+		        session.invalidate();
+		    }
+			req.getRequestDispatcher("view/login/loginForm.jsp").forward(req, resp);
 			return;
 		}
 	}
