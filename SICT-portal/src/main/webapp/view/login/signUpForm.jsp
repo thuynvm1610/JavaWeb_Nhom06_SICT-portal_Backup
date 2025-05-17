@@ -66,18 +66,6 @@
         .auth-footer__button:hover {
             text-decoration: underline;
         }
-
-        .alert-success {
-            background-color: #e0f7e9;
-            color: #2e7d32;
-            border: 1px solid #2e7d32;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin: 10px 0;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
     </style>
 </head>
 

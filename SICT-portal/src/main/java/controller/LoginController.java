@@ -83,7 +83,7 @@ public class LoginController extends HttpServlet {
 				message.append("Xác nhận mật khẩu sai<br>");
 			}
 
-			String accountID = loginDAO.generateNextStudentAccountID();
+			String accountID = loginDAO.generateNextAccountID();
 			Account account = new Account();
 			account.setAccountID(accountID);
 			account.setUsername(req.getParameter("username"));
@@ -103,8 +103,7 @@ public class LoginController extends HttpServlet {
 			
 			accountDAO.insert(account);
 			req.setAttribute("succeedAddMessage", "Đăng ký tài khoản thành công");
-			resp.sendRedirect("login?action=signUpForm");
-			req.removeAttribute("succeedAddMessage");
+			req.getRequestDispatcher("view/login/signUpForm.jsp").forward(req, resp);
 			return;
 		}
 	}

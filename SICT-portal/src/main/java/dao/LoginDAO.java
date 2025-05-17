@@ -106,8 +106,8 @@ public class LoginDAO {
 		}
 	}
 	
-	public String getLastStudentAccountID() {
-	    String sql = "select accountID from account where role = 'student' order by accountID desc limit 1";
+	public String getLastAccountID() {
+	    String sql = "select accountID from account order by accountID desc limit 1";
 	    DBConnect dbConn = new DBConnect();
 	    try {
 	        Connection conn = dbConn.getConnection();
@@ -125,8 +125,8 @@ public class LoginDAO {
 	    return null;
 	}
 	
-	public String generateNextStudentAccountID() {
-	    String lastID = getLastStudentAccountID();
+	public String generateNextAccountID() {
+	    String lastID = getLastAccountID();
 	    if (lastID != null) {
 	        int number = Integer.parseInt(lastID.substring(3));
 	        number++;

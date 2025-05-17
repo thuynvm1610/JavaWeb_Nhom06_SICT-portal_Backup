@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.AccountDAO;
 import dao.ClassroomDAO;
@@ -152,7 +153,7 @@ public class AdminController extends HttpServlet {
 				req.setAttribute("studentList", List.of(student));
 			} else {
 				req.setAttribute("message", "Không tìm thấy sinh viên " + studentID);
-				req.setAttribute("searchStudent", List.of());
+				req.setAttribute("studentList", List.of());
 			}
 			req.getRequestDispatcher("view/admin/studentList.jsp").forward(req, resp);
 			return;
@@ -197,7 +198,7 @@ public class AdminController extends HttpServlet {
 				req.setAttribute("accountList", List.of(account));
 			} else {
 				req.setAttribute("message", "Không tìm thấy tài khoản " + accountID);
-				req.setAttribute("searchAccount", List.of());
+				req.setAttribute("accountList", List.of());
 			}
 			req.getRequestDispatcher("view/admin/accountList.jsp").forward(req, resp);
 			return;
@@ -283,6 +284,13 @@ public class AdminController extends HttpServlet {
 			req.setAttribute("totalTeacher", totalTeacher);
 			req.setAttribute("totalAccount", totalAccount);
 			req.getRequestDispatcher("view/admin/dashboard.jsp").forward(req, resp);
+			return;
+		} else if (action.equals("logout")) {
+			HttpSession session = req.getSession(false);
+		    if (session != null) {
+		        session.invalidate();
+		    }
+			req.getRequestDispatcher("view/login/loginForm.jsp").forward(req, resp);
 			return;
 		}
 
@@ -523,16 +531,10 @@ public class AdminController extends HttpServlet {
 			return;
 		} else if (action.equals("updateAccount")) {
 			AccountDAO accountDAO = new AccountDAO();
-			StudentDAO studentDAO = new StudentDAO();
 			StringBuilder message = new StringBuilder();
 
 			if (accountDAO.isUsernameExists(req.getParameter("username"), req.getParameter("accountID"))) {
 				message.append("Tên tài khoản đã được sử dụng<br>");
-			} else if (accountDAO.isStudentIDUsed(req.getParameter("studentID"), req.getParameter("oldStudentID"),
-					req.getParameter("role"))) {
-				message.append("Mã sinh viên đã được sử dụng<br>");
-			} else if (!studentDAO.isStudentExists(req.getParameter("studentID"), req.getParameter("role"))) {
-				message.append("Mã sinh viên không tồn tại<br>");
 			}
 
 			Account account = new Account();

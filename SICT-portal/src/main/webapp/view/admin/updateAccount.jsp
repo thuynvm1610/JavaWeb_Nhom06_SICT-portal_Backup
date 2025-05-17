@@ -209,7 +209,8 @@
                     <form action="admin" method="post">
                         <input type="hidden" name="action" value="updateAccount" />
                         <input type="hidden" name="accountID" value="${account.accountID}">
-                        <input type="hidden" name="oldStudentID" value="${account.studentID}">
+                        <input type="hidden" name="studentID" value="${account.studentID}">
+                        <input type="hidden" name="role" value="${account.role}">
                         <div class="mb-3">
                             <label for="username" class="form-label">Tên TK</label>
                             <input id="username" class="form-control" type="text" name="username"
@@ -219,19 +220,6 @@
                             <label for="password" class="form-label">Mật khẩu</label>
                             <input id="password" class="form-control" type="text" name="password"
                                 value="${account.password}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="role" class="form-label">Quyền đăng nhập</label>
-                            <select class="form-select" id="role" name="role" required>
-                                <option value="">Chọn quyền</option>
-                                <option value="student" ${account.role=='student' ? 'selected' : '' }>Student</option>
-                                <option value="admin" ${account.role=='admin' ? 'selected' : '' }>Admin</option>
-                            </select>
-                        </div>
-                        <div class="mb-3" id="studentIDField">
-                            <label for="studentID" class="form-label">Mã SV</label>
-                            <input id="studentID" class="form-control" type="text" name="studentID"
-                                value="${account.studentID}" required>
                         </div>
                         <div style="display: flex; flex-direction: row-reverse;">
                             <button style="margin-left: 10px;" type="submit" class="btn btn-primary">Lưu</button>
