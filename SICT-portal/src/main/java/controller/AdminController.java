@@ -293,8 +293,6 @@ public class AdminController extends HttpServlet {
 			req.getRequestDispatcher("view/login/loginForm.jsp").forward(req, resp);
 			return;
 		}
-
-		req.getRequestDispatcher("view/admin/dashboard.jsp").forward(req, resp);
 	}
 
 	@Override

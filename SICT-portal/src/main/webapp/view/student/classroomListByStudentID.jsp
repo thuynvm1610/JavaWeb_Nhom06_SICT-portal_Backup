@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -34,9 +33,9 @@
 </head>
 
 <body>
-    <c:if test="${not empty succeedAddMessage}">
-        <div class="alert-success">
-            &#9989; ${succeedAddMessage}
+    <c:if test="${not empty message}">
+        <div class="alert-info">
+            &#8505; ${message}
         </div>
     </c:if>
     <div class="container-fluid">
@@ -52,7 +51,7 @@
                     </div>
                 </div>
                 <ul class="nav flex-column">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <form method="get" action="student">
                             <input type="hidden" name="action" value="personalInformation">
                             <button type="submit" class="sidebar-btn">
@@ -74,7 +73,7 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <form method="get" action="student">
                             <input type="hidden" name="action" value="searchClassroomListByStudentID">
                             <button type="submit" class="sidebar-btn">
@@ -101,46 +100,51 @@
             <!-- Main content -->
             <div class="col-md-10 main-content">
                 <div class="tab-content">
-                    <!-- Personal Information Tab -->
-                    <h2 class="mb-4">Thông tin cá nhân</h2>
-                    <div class="card">
-                        <div class="card-header">
-                            <span>Thông tin cá nhân</span>
+                    <!-- Student's Classrooms Tab -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Danh sách lớp đang học của <strong>
+                                    <c:out value="${studentID}" />
+                                </strong></h2>
                         </div>
-                        <div class="card-body">
-                            <form method="get" action="student">
-                                <div class="row">
-                                    <input type="hidden" name="action" value="updateEmailForm">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="name" class="form-label">Họ và tên</label>
-                                        <input type="text" class="form-control" id="name" name="name"
-                                            value="${student.name}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="studentID" class="form-label">Mã sinh viên</label>
-                                        <input type="text" class="form-control" id="studentID" name="studentID"
-                                            value="${student.studentID}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="dob" class="form-label">Ngày sinh</label>
-                                        <input type="text" class="form-control" id="dob" name="dob"
-                                            value="${student.dob}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="gender" class="form-label">Giới tính</label>
-                                        <input type="text" class="form-control" id="gender" name="gender"
-                                            value="${student.gender}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email"
-                                            value="${student.email}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary">Cập nhật email</button>
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Danh sách lớp học</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div style="max-height: 520.5px; overflow: auto;">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã lớp</th>
+                                                    <th>Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="sc" items="${student_classroomList}">
+                                                    <tr>
+                                                        <td>${sc.classroomID}</td>
+                                                        <td>
+                                                            <div style="display: flex; gap: 5px;">
+                                                                <form method="get" action="student">
+                                                                    <input type="hidden" name="action"
+                                                                        value="searchStudentListByClassroomID" />
+                                                                    <input type="hidden" name="classroomID"
+                                                                        value="${sc.classroomID}" />
+                                                                    <button class="btn btn-sm btn-info" type="submit">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>

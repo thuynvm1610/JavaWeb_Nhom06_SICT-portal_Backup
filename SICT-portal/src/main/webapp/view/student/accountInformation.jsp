@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <ul class="nav flex-column">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <form method="get" action="student">
                             <input type="hidden" name="action" value="personalInformation">
                             <button type="submit" class="sidebar-btn">
@@ -63,7 +63,7 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <form method="get" action="student">
                             <input type="hidden" name="action" value="accountInformation">
                             <button type="submit" class="sidebar-btn">
@@ -101,43 +101,31 @@
             <!-- Main content -->
             <div class="col-md-10 main-content">
                 <div class="tab-content">
-                    <!-- Personal Information Tab -->
-                    <h2 class="mb-4">Thông tin cá nhân</h2>
+                    <!-- Account Information Tab -->
+                    <h2 class="mb-4">Thông tin tài khoản</h2>
                     <div class="card">
                         <div class="card-header">
-                            <span>Thông tin cá nhân</span>
+                            <span>Thông tin tài khoản</span>
                         </div>
                         <div class="card-body">
                             <form method="get" action="student">
                                 <div class="row">
-                                    <input type="hidden" name="action" value="updateEmailForm">
+                                    <input type="hidden" name="action" value="changePasswordForm">
+                                    <input type="hidden" name="accountID" value="${account.accountID}">
+                                    <input type="hidden" name="role" value="${account.role}">
+                                    <input type="hidden" name="studentID" value="${account.studentID}">
                                     <div class="col-md-6 mb-3">
-                                        <label for="name" class="form-label">Họ và tên</label>
-                                        <input type="text" class="form-control" id="name" name="name"
-                                            value="${student.name}" style="box-shadow: none;" readonly>
+                                        <label for="username" class="form-label">Tên tài khoản</label>
+                                        <input type="text" class="form-control" id="username" name="username"
+                                            value="${account.username}" style="box-shadow: none;" readonly>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="studentID" class="form-label">Mã sinh viên</label>
-                                        <input type="text" class="form-control" id="studentID" name="studentID"
-                                            value="${student.studentID}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="dob" class="form-label">Ngày sinh</label>
-                                        <input type="text" class="form-control" id="dob" name="dob"
-                                            value="${student.dob}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="gender" class="form-label">Giới tính</label>
-                                        <input type="text" class="form-control" id="gender" name="gender"
-                                            value="${student.gender}" style="box-shadow: none;" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email"
-                                            value="${student.email}" style="box-shadow: none;" readonly>
+                                        <label for="password" class="form-label">Mật khẩu</label>
+                                        <input type="text" class="form-control" id="password" name="password"
+                                            value="${account.password}" style="box-shadow: none;" readonly>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary">Cập nhật email</button>
+                                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
                                     </div>
                                 </div>
                             </form>

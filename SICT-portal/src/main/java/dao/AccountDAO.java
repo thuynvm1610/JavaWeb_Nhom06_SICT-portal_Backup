@@ -189,4 +189,25 @@ public class AccountDAO {
 		}
 	}
 
+	public String getAccountID(String studentID) {
+		String sql = "select accountID from account where studentID = ?";
+		DBConnect dbConn = new DBConnect();
+		String accountID = null;
+		try {
+			Connection conn = dbConn.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, studentID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				accountID = rs.getString("accountID");
+			}
+			conn.close();
+			pstmt.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return accountID;
+	}
+	
 }

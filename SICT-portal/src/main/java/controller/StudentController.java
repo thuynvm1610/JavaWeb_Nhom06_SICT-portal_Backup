@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.AccountDAO;
 import dao.StudentDAO;
 import dao.Student_classroomDAO;
+import model.Account;
 import model.Student;
 import model.Student_classroom;
 
@@ -38,33 +40,64 @@ public class StudentController extends HttpServlet {
 			Student student = studentDAO.findByID(studentID);
 			
 			req.setAttribute("student", student);
-			
+			String succeedAddMessage = (String) req.getSession().getAttribute("succeedAddMessage");
+			if (succeedAddMessage != null) {
+			    req.setAttribute("succeedAddMessage", succeedAddMessage);
+			    req.getSession().removeAttribute("succeedAddMessage");
+			}
 			req.getRequestDispatcher("view/student/personalInformation.jsp").forward(req, resp);
 			return;
-		} else if (action.equals("classroomListByStudentID")) {
-			String studentID = req.getParameter("studentID");
-			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
-			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(null, studentID);
-			req.setAttribute("student_classroomList", student_classroomList);
-			req.setAttribute("studentID", studentID);
-			req.getRequestDispatcher("view/student/classroomList.jsp").forward(req, resp);
-			return;
-		} else if (action.equals("searchStudentListByClassroomID")) {
-			String classroomID = req.getParameter("classroomID");
-			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
-			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(classroomID, null);
-			req.setAttribute("student_classroomList", student_classroomList);
-			if (student_classroomList.isEmpty()) {
-				req.setAttribute("message", "Không tìm thấy lớp học có mã: " + classroomID);
+		} else if (action.equals("accountInformation")) {
+			String studentID = (String) req.getSession().getAttribute("studentID");
+			AccountDAO accoutDAO = new AccountDAO();
+			String accountID = accoutDAO.getAccountID(studentID);
+			Account account = accoutDAO.findByID(accountID);
+			req.setAttribute("account", account);
+			String succeedAddMessage = (String) req.getSession().getAttribute("succeedAddMessage");
+			if (succeedAddMessage != null) {
+			    req.setAttribute("succeedAddMessage", succeedAddMessage);
+			    req.getSession().removeAttribute("succeedAddMessage");
 			}
-			req.getRequestDispatcher("view/student/classroomList.jsp").forward(req, resp);
-			return;
-		} else if (action.equals("updateStudentForm")) {
-			String studentID = req.getParameter("studentID");
+			req.getRequestDispatcher("view/student/accountInformation.jsp").forward(req, resp);
+			
+		} else if (action.equals("updateEmailForm")) {
+			String studentID = (String) req.getSession().getAttribute("studentID");
 			StudentDAO studentDAO = new StudentDAO();
 			Student student = studentDAO.findByID(studentID);
 			req.setAttribute("student", student);
-			req.getRequestDispatcher("view/student/updateStudent.jsp").forward(req, resp);
+			req.getRequestDispatcher("view/student/updateEmail.jsp").forward(req, resp);
+		} else if (action.equals("changePasswordForm")) {
+			String studentID = (String) req.getSession().getAttribute("studentID");
+			AccountDAO accoutDAO = new AccountDAO();
+			String accountID = accoutDAO.getAccountID(studentID);
+			Account account = accoutDAO.findByID(accountID);
+			req.setAttribute("account", account);
+			req.getRequestDispatcher("view/student/changePassword.jsp").forward(req, resp);
+		} else if (action.equals("searchClassroomListByStudentID")) {
+			String studentID = (String) req.getSession().getAttribute("studentID");
+			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
+			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(null, studentID);
+			req.setAttribute("student_classroomList", student_classroomList);
+			if (student_classroomList.isEmpty()) {
+				req.setAttribute("message", "Bạn hiện chưa học lớp nào");
+			}
+			req.getRequestDispatcher("view/student/classroomListByStudentID.jsp").forward(req, resp);
+			return;
+		} else if (action.equals("searchClassroomListByOtherStudentID")) {
+			String studentID = req.getParameter("studentID");
+			req.setAttribute("studentID", studentID);
+			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
+			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(null, studentID);
+			req.setAttribute("student_classroomList", student_classroomList);
+			req.getRequestDispatcher("view/student/classroomListByStudentID.jsp").forward(req, resp);
+			return;
+		} else if (action.equals("searchStudentListByClassroomID")) {
+			String classroomID = req.getParameter("classroomID");
+			req.setAttribute("classroomID", classroomID);
+			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
+			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(classroomID, null);
+			req.setAttribute("student_classroomList", student_classroomList);
+			req.getRequestDispatcher("view/student/studentListByClassroomID.jsp").forward(req, resp);
 			return;
 		} else if (action.equals("logout")) {
 			HttpSession session = req.getSession(false);
@@ -83,7 +116,7 @@ public class StudentController extends HttpServlet {
 
 		String action = req.getParameter("action");
 
-		if (action.equals("updateStudent")) {
+		if (action.equals("updateEmail")) {
 			StudentDAO studentDAO = new StudentDAO();
 			StringBuilder message = new StringBuilder();
 
@@ -101,12 +134,29 @@ public class StudentController extends HttpServlet {
 			req.setAttribute("student", student);
 			if (message.length() > 0) {
 				req.setAttribute("message", message.toString());
-				req.getRequestDispatcher("view/student/updateStudent.jsp").forward(req, resp);
+				req.getRequestDispatcher("view/student/updateEmail.jsp").forward(req, resp);
 				return;
 			}
 
 			studentDAO.update(student);
+			req.getSession().setAttribute("succeedAddMessage", "Cập nhật email thành công");
 			req.getRequestDispatcher("view/student/personalInformation.jsp").forward(req, resp);
+			return;
+		} else if (action.equals("changePassword")) {
+			AccountDAO accountDAO = new AccountDAO();
+			
+			Account account = new Account();
+			account.setAccountID(req.getParameter("accountID"));
+			account.setUsername(req.getParameter("username"));
+			account.setRole(req.getParameter("role"));
+			account.setStudentID(req.getParameter("studentID"));
+			account.setPassword(req.getParameter("password"));
+			
+			req.setAttribute("account", account);
+			
+			accountDAO.update(account);
+			req.getSession().setAttribute("succeedAddMessage", "Cập nhật mật khẩu thành công");
+			req.getRequestDispatcher("view/student/accountInformation.jsp").forward(req, resp);
 			return;
 		}
 	}
