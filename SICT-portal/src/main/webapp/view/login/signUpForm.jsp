@@ -17,7 +17,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f8f9fa;
+            background-color: rgba(255, 255, 255, 0.3);
         }
 
         .auth-card {
@@ -66,6 +66,17 @@
         .auth-footer__button:hover {
             text-decoration: underline;
         }
+
+        .bg__img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background-size: cover;
+            z-index: -1;
+        }
     </style>
 </head>
 
@@ -81,6 +92,7 @@
         </div>
     </c:if>
     <!-- Register Page -->
+    <div class="bg__img" style="background-image: url('https://www.haui.edu.vn/media/105/t105218.jpg');"></div>
     <div class="auth-container" id="registerPage">
         <div class="auth-card">
             <div class="auth-header">
