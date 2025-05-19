@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.AccountDAO;
+import dao.ClassroomDAO;
 import dao.StudentDAO;
 import dao.Student_classroomDAO;
 import model.Account;
+import model.Classroom;
 import model.Student;
 import model.Student_classroom;
 
@@ -77,7 +80,18 @@ public class StudentController extends HttpServlet {
 			String studentID = (String) req.getSession().getAttribute("studentID");
 			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
 			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(null, studentID);
-			req.setAttribute("student_classroomList", student_classroomList);
+			List<Classroom> classroomList = new ArrayList<>();
+			ClassroomDAO classroomDAO = new ClassroomDAO();
+			for (int i = 0; i < student_classroomList.size(); i++) {
+				String classroomID = student_classroomList.get(i).getClassroomID();
+				String classroomName = classroomDAO.getClassroomName(classroomID);
+				Classroom classroom = new Classroom();
+				classroom.setClassroomID(classroomID);
+				classroom.setName(classroomName);
+				classroom.setTeacherID(null);
+				classroomList.add(classroom);
+			}
+			req.setAttribute("classroomList", classroomList);
 			if (student_classroomList.isEmpty()) {
 				req.setAttribute("message", "Bạn hiện chưa học lớp nào");
 			}
@@ -88,7 +102,18 @@ public class StudentController extends HttpServlet {
 			req.setAttribute("studentID", studentID);
 			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
 			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(null, studentID);
-			req.setAttribute("student_classroomList", student_classroomList);
+			List<Classroom> classroomList = new ArrayList<>();
+			ClassroomDAO classroomDAO = new ClassroomDAO();
+			for (int i = 0; i < student_classroomList.size(); i++) {
+				String classroomID = student_classroomList.get(i).getClassroomID();
+				String classroomName = classroomDAO.getClassroomName(classroomID);
+				Classroom classroom = new Classroom();
+				classroom.setClassroomID(classroomID);
+				classroom.setName(classroomName);
+				classroom.setTeacherID(null);
+				classroomList.add(classroom);
+			}
+			req.setAttribute("classroomList", classroomList);
 			req.getRequestDispatcher("view/student/classroomListByStudentID.jsp").forward(req, resp);
 			return;
 		} else if (action.equals("searchStudentListByClassroomID")) {
@@ -96,7 +121,20 @@ public class StudentController extends HttpServlet {
 			req.setAttribute("classroomID", classroomID);
 			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
 			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(classroomID, null);
-			req.setAttribute("student_classroomList", student_classroomList);
+			List<Student> studentList = new ArrayList<>();
+			StudentDAO studentDAO = new StudentDAO();
+			for (int i = 0; i < student_classroomList.size(); i++) {
+				String studentID = student_classroomList.get(i).getStudentID();
+				String studentName = studentDAO.getStudentName(studentID);
+				Student student = new Student();
+				student.setStudentID(studentID);
+				student.setName(studentName);
+				student.setDob(null);
+				student.setEmail(null);
+				student.setGender(null);
+				studentList.add(student);
+			}
+			req.setAttribute("studentList", studentList);
 			req.getRequestDispatcher("view/student/studentListByClassroomID.jsp").forward(req, resp);
 			return;
 		} else if (action.equals("logout")) {
