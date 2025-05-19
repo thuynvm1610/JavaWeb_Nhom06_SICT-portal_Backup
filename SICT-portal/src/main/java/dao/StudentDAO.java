@@ -192,4 +192,25 @@ public class StudentDAO {
 		}
 	}
 
+	public String getStudentName(String studentID) {
+		String sql = "select name from student where studentID = ?";
+		DBConnect dbConn = new DBConnect();
+		String studentName = null;
+		try {
+			Connection conn = dbConn.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, studentID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				studentName = rs.getString("name");
+			}
+			conn.close();
+			pstmt.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return studentName;
+	}
+
 }

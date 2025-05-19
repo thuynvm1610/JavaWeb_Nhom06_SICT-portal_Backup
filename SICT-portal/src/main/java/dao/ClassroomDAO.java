@@ -164,4 +164,25 @@ public class ClassroomDAO {
 		return classroomList;
 	}
 	
+	public String getClassroomName(String classroomID) {
+		String sql = "select name from classroom where classroomID = ?";
+		DBConnect dbConn = new DBConnect();
+		String classroomName = null;
+		try {
+			Connection conn = dbConn.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, classroomID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				classroomName = rs.getString("name");
+			}
+			conn.close();
+			pstmt.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return classroomName;
+	}
+	
 }

@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -172,7 +173,18 @@ public class AdminController extends HttpServlet {
 			String studentID = req.getParameter("studentID");
 			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
 			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(null, studentID);
-			req.setAttribute("student_classroomList", student_classroomList);
+			List<Classroom> classroomList = new ArrayList<>();
+			ClassroomDAO classroomDAO = new ClassroomDAO();
+			for (int i = 0; i < student_classroomList.size(); i++) {
+				String classroomID = student_classroomList.get(i).getClassroomID();
+				String classroomName = classroomDAO.getClassroomName(classroomID);
+				Classroom classroom = new Classroom();
+				classroom.setClassroomID(classroomID);
+				classroom.setName(classroomName);
+				classroom.setTeacherID(null);
+				classroomList.add(classroom);
+			}
+			req.setAttribute("classroomList", classroomList);
 			req.setAttribute("studentID", studentID);
 			if (student_classroomList.isEmpty()) {
 				req.setAttribute("message", "Sinh viên " + req.getParameter("studentID") + " hiện chưa học lớp nào");
@@ -183,7 +195,20 @@ public class AdminController extends HttpServlet {
 			String classroomID = req.getParameter("classroomID");
 			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
 			List<Student_classroom> student_classroomList = student_classroomDAO.findByID(classroomID, null);
-			req.setAttribute("student_classroomList", student_classroomList);
+			List<Student> studentList = new ArrayList<>();
+			StudentDAO studentDAO = new StudentDAO();
+			for (int i = 0; i < student_classroomList.size(); i++) {
+				String studentID = student_classroomList.get(i).getStudentID();
+				String studentName = studentDAO.getStudentName(studentID);
+				Student student = new Student();
+				student.setStudentID(studentID);
+				student.setName(studentName);
+				student.setDob(null);
+				student.setEmail(null);
+				student.setGender(null);
+				studentList.add(student);
+			}
+			req.setAttribute("studentList", studentList);
 			req.setAttribute("classroomID", classroomID);
 			if (student_classroomList.isEmpty()) {
 				req.setAttribute("message", "Lớp " + req.getParameter("classroomID") + " hiện chưa có sinh viên nào");
@@ -234,14 +259,6 @@ public class AdminController extends HttpServlet {
 			Student student = studentDAO.findByID(studentID);
 			req.setAttribute("student", student);
 			req.getRequestDispatcher("view/admin/updateStudent.jsp").forward(req, resp);
-			return;
-		} else if (action.equals("updateStudent_classroomForm")) {
-			String studentID = req.getParameter("studentID");
-			String classroomID = req.getParameter("classroomID");
-			Student_classroomDAO student_classroomDAO = new Student_classroomDAO();
-			Student_classroom student_classroom = student_classroomDAO.findByID(classroomID, studentID).get(0);
-			req.setAttribute("student_classroom", student_classroom);
-			req.getRequestDispatcher("view/admin/updateStudent_classroom.jsp").forward(req, resp);
 			return;
 		} else if (action.equals("updateAccountForm")) {
 			String accountID = req.getParameter("accountID");

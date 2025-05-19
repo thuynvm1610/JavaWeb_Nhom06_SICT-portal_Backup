@@ -126,20 +126,22 @@
                                             <thead>
                                                 <tr>
                                                     <th>Mã lớp</th>
+                                                    <th>Tên lớp</th>
                                                     <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="sc" items="${student_classroomList}">
+                                                <c:forEach var="cl" items="${classroomList}">
                                                     <tr>
-                                                        <td>${sc.classroomID}</td>
+                                                        <td>${cl.classroomID}</td>
+                                                        <td>${cl.name}</td>
                                                         <td>
                                                             <div style="display: flex; gap: 5px;">
                                                                 <form method="get" action="admin">
                                                                     <input type="hidden" name="action"
                                                                         value="searchStudentListByClassroomID" />
                                                                     <input type="hidden" name="classroomID"
-                                                                        value="${sc.classroomID}" />
+                                                                        value="${cl.classroomID}" />
                                                                     <button class="btn btn-sm btn-info" type="submit">
                                                                         <i class="fas fa-eye"></i>
                                                                     </button>
