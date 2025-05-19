@@ -430,7 +430,7 @@ public class AdminController extends HttpServlet {
 
 			student_classroomDAO.insert(student_classroom);
 			StringBuilder succeedAddMessage = new StringBuilder();
-			succeedAddMessage.append("Thêm sinh viên thành công<br>");
+			succeedAddMessage.append("Thêm sinh viên vào lớp thành công<br>");
 			req.setAttribute("succeedAddMessage", succeedAddMessage.toString());
 			req.getRequestDispatcher("view/admin/student_classroom.jsp").forward(req, resp);
 			return;
@@ -610,7 +610,7 @@ public class AdminController extends HttpServlet {
 			
 			student_classroomDAO.delete(req.getParameter("classroomID"), req.getParameter("studentID"));
 			StringBuilder succeedDeleteMessage = new StringBuilder();
-			succeedDeleteMessage.append("Xóa sinh viên thành công<br>");
+			succeedDeleteMessage.append("Xóa sinh viên khỏi lớp thành công<br>");
 			req.setAttribute("succeedDeleteMessage", succeedDeleteMessage.toString());
 			req.getRequestDispatcher("view/admin/student_classroom.jsp").forward(req, resp);
 			return;
