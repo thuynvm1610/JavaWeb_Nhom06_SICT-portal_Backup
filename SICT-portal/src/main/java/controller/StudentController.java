@@ -159,7 +159,7 @@ public class StudentController extends HttpServlet {
 			StringBuilder message = new StringBuilder();
 
 			if (studentDAO.isEmailExists(req.getParameter("email"), req.getParameter("studentID"))) {
-				message.append("Email đã tồn tại!<br>");
+				message.append("Email đã được sử dụng<br>");
 			}
 
 			Student student = new Student();
